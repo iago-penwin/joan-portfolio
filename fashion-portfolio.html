@@ -14,7 +14,10 @@
         html{scroll-behavior:smooth}
         body{font-family:'Space Grotesk',sans-serif;background:var(--bg-alt);color:var(--text);overflow-x:hidden;cursor:crosshair;-webkit-font-smoothing:antialiased}
         body *,a,button{cursor:crosshair!important}
-        img{display:block;max-width:100%;height:auto}
+        img{display:block;max-width:100%;height:auto;background:#0a0a0a}
+        img[loading="lazy"]{opacity:0;transition:opacity .4s ease}
+        img[loading="lazy"].loaded{opacity:1}
+        img[loading="lazy"]:not(.loaded){image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges}
         section{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;padding:0}
 
         /* Fixed UI */
@@ -109,9 +112,12 @@
         .design5-finale{background:var(--bg);padding:0;min-height:100vh;position:relative;overflow:hidden}
         .design5-grid{display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,50vh);gap:0;width:100%;height:100vh}
         .design5-cell{position:relative;overflow:hidden;background:#0a0a0a}
+        .design5-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,#0a0a0a 25%,#1a1a1a 25%,#1a1a1a 50%,#0a0a0a 50%,#0a0a0a 75%,#1a1a1a 75%);background-size:20px 20px;opacity:0;animation:loading 1s linear infinite;pointer-events:none}
+        .design5-cell img.loaded+*::after,.design5-cell img.loaded~*::after{opacity:0!important}
+        @keyframes loading{0%{background-position:0 0}100%{background-position:20px 20px}}
         .design5-cell img{width:100%;height:100%;object-fit:cover;filter:grayscale(20%) contrast(115%);transition:all .8s ease;transform:translateZ(0)}
         .design5-cell:hover img{filter:grayscale(0%) contrast(125%);transform:scale(1.15) translateZ(0)}
-        .design5-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .4s ease}
+        .design5-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .4s ease;z-index:10}
         .design5-cell:hover .design5-overlay{opacity:1}
         .design5-label{font-family:'Bebas Neue',sans-serif;font-size:4rem;color:var(--text);letter-spacing:-2px;text-shadow:2px 2px 10px rgba(0,0,0,.8)}
         .design5-title-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,18vw,22rem);color:var(--text);letter-spacing:-8px;text-transform:uppercase;line-height:.8;text-align:center;pointer-events:none;z-index:10;text-shadow:4px 4px 40px rgba(0,0,0,.9);mix-blend-mode:difference}
@@ -336,16 +342,111 @@
     </section>
 
     <script>
+        // Aggressive image loader - images are now 2MB each (optimized)
+        let loaded=new Set(),loadQueue=[],activeLoads=0;
+        const MAX_CONCURRENT=6; // More concurrent loads since images are lighter
+
+        // Fast load function
+        const loadImg=(img)=>{
+            if(loaded.has(img))return Promise.resolve();
+            loaded.add(img);
+
+            return new Promise(resolve=>{
+                if(img.dataset.src){
+                    img.src=img.dataset.src;
+                    img.removeAttribute('data-src');
+                }
+
+                const finish=()=>{
+                    img.classList.add('loaded');
+                    activeLoads--;
+                    processQueue();
+                    resolve();
+                };
+
+                if(img.complete){
+                    finish();
+                }else{
+                    img.onload=finish;
+                    img.onerror=finish;
+                }
+            });
+        };
+
+        // Process queue with higher concurrency
+        const processQueue=()=>{
+            while(activeLoads<MAX_CONCURRENT&&loadQueue.length>0){
+                activeLoads++;
+                const img=loadQueue.shift();
+                loadImg(img);
+            }
+        };
+
+        // Add to queue
+        const queueLoad=(img,priority=false)=>{
+            if(!loaded.has(img)&&!loadQueue.includes(img)){
+                if(priority){
+                    loadQueue.unshift(img);
+                }else{
+                    loadQueue.push(img);
+                }
+                processQueue();
+            }
+        };
+
+        // Aggressive viewport observer
+        const imgOpts={threshold:0,rootMargin:'2000px 0px'}; // Increased margin
+        const imgObs=new IntersectionObserver(e=>{
+            e.forEach(t=>{
+                if(t.isIntersecting&&t.target.tagName==='IMG'){
+                    loadQueue.unshift(t.target); // Priority
+                    processQueue();
+                    imgObs.unobserve(t.target);
+                }
+            })
+        },imgOpts);
+
+        // Initialize
+        window.addEventListener('DOMContentLoaded',()=>{
+            const imgs=Array.from(document.querySelectorAll('img[loading="lazy"]'));
+
+            // Convert to data-src
+            imgs.forEach((img,i)=>{
+                if(i>2){ // Keep first 3 with src
+                    img.dataset.src=img.src;
+                    img.removeAttribute('src');
+                }
+                imgObs.observe(img);
+            });
+
+            // Load first 3 immediately
+            imgs.slice(0,3).forEach(img=>loadImg(img));
+
+            // Aggressive preload after 300ms
+            setTimeout(()=>{
+                // Load all remaining images quickly
+                imgs.slice(3).forEach(img=>queueLoad(img));
+            },300);
+
+            // On scroll, boost priority
+            window.addEventListener('scroll',()=>{
+                imgs.forEach(img=>queueLoad(img,true));
+            },{passive:true,once:true});
+        });
+
+        // Fade elements
         const opts={threshold:.15,rootMargin:'0px 0px -50px 0px'};
         const fadeObs=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){t.target.classList.add('visible');fadeObs.unobserve(t)}})},opts);
         document.querySelectorAll('.fade-in-element').forEach(el=>fadeObs.observe(el));
 
+        // Page counter
         const secs=document.querySelectorAll('section');
         const counter=document.querySelector('.page-counter');
         let curr=1;
         const secObs=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const i=Array.from(secs).indexOf(t.target)+1;if(i!==curr){curr=i;counter.textContent=i.toString().padStart(2,'0')}}})},{threshold:.5});
         secs.forEach(s=>secObs.observe(s));
 
+        // Parallax
         const cvr=document.querySelector('.cover');
         const cvrTitle=document.querySelector('.cover-title');
         let tick=false;
