@@ -8,6 +8,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital@1&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+
+    <!-- Precarga de imágenes críticas -->
+    <link rel="preload" as="image" href="DISSENYS-WEBP/main.webp" fetchpriority="high" type="image/webp">
+    <link rel="preload" as="image" href="DISSENYS-WEBP/1-diseño1.webp" fetchpriority="high" type="image/webp">
+    <link rel="preload" as="image" href="DISSENYS-WEBP/2-diseño1.webp" type="image/webp">
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{--bg:#000;--bg-alt:#1a1a1a;--text:#fff;--accent:#e63946}
@@ -15,8 +20,11 @@
         body{font-family:'Space Grotesk',sans-serif;background:var(--bg-alt);color:var(--text);overflow-x:hidden;cursor:crosshair;-webkit-font-smoothing:antialiased}
         body *,a,button{cursor:crosshair!important}
         img{display:block;max-width:100%;height:auto;background:#0a0a0a}
-        img[loading="lazy"]{opacity:0;transition:opacity .4s ease}
-        img[loading="lazy"].loaded{opacity:1}
+
+        /* Picture element debe comportarse transparente */
+        picture{display:contents}
+
+        /* Sistema de carga progresiva */
         img[loading="lazy"]:not(.loaded){image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges}
         section{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;padding:0}
 
@@ -193,7 +201,10 @@
                 <div class="editorial-signature">Joan Verge Flores</div>
             </div>
             <div class="editorial-image-wrap">
-                <img src="DISSENYS/main.JPG" alt="Editorial Portrait" class="editorial-image" loading="lazy">
+                <picture>
+                    <source srcset="DISSENYS-WEBP/main.webp" type="image/webp">
+                    <img src="DISSENYS/main.JPG" alt="Editorial Portrait" class="editorial-image" fetchpriority="high" decoding="async">
+                </picture>
                 <div class="editorial-number">01</div>
             </div>
         </div>
@@ -203,21 +214,33 @@
         <div class="collection-title-overlay">DISEÑO 1</div>
         <div class="collection-spread">
             <div class="collection-item fade-in-element">
-                <img src="DISSENYS/1-diseño1.JPG" alt="Diseño 1 - Vista Principal" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/1-diseño1-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/1-diseño1.webp" type="image/webp">
+                    <img src="DISSENYS/1-diseño1.JPG" alt="Diseño 1 - Vista Principal" loading="lazy" decoding="async" class="img-main">
+                </picture>
                 <div class="collection-caption">
                     <h3>DISEÑO 1</h3>
                     <p>Vista Principal</p>
                 </div>
             </div>
             <div class="collection-item fade-in-element">
-                <img src="DISSENYS/1-diseño2.JPG" alt="Diseño 1 - Detalle" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/1-diseño2-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/1-diseño2.webp" type="image/webp">
+                    <img src="DISSENYS/1-diseño2.JPG" alt="Diseño 1 - Detalle" loading="lazy" decoding="async" class="img-main">
+                </picture>
                 <div class="collection-caption">
                     <h3>DETALLE</h3>
                     <p>Textura y forma</p>
                 </div>
             </div>
             <div class="collection-item fade-in-element">
-                <img src="DISSENYS/1-diseño3.JPG" alt="Diseño 1 - Alternativa" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/1-diseño3-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/1-diseño3.webp" type="image/webp">
+                    <img src="DISSENYS/1-diseño3.JPG" alt="Diseño 1 - Alternativa" loading="lazy" decoding="async" class="img-main">
+                </picture>
                 <div class="collection-caption">
                     <h3>VARIACIÓN</h3>
                     <p>Ángulo alternativo</p>
@@ -227,7 +250,11 @@
     </section>
 
     <section class="fullbleed">
-        <img src="DISSENYS/2-diseño1.JPG" alt="Diseño 2 Full Bleed" class="fullbleed-image" loading="lazy">
+        <picture>
+            <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/2-diseño1-mobile.webp" type="image/webp">
+            <source srcset="DISSENYS-WEBP/2-diseño1.webp" type="image/webp">
+            <img src="DISSENYS/2-diseño1.JPG" alt="Diseño 2 Full Bleed" class="fullbleed-image" loading="lazy" decoding="async">
+        </picture>
         <div class="fullbleed-subtitle">DISEÑO 2</div>
         <div class="fullbleed-text">BEYOND<br>FASHION</div>
     </section>
@@ -239,19 +266,39 @@
         </div>
         <div class="masonry-grid">
             <div class="masonry-item fade-in-element">
-                <img src="DISSENYS/3-diseño1.JPG" alt="Diseño 3 - Vista 1" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/3-diseño1-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/3-diseño1.webp" type="image/webp">
+                    <img src="DISSENYS/3-diseño1.JPG" alt="Diseño 3 - Vista 1" loading="lazy" decoding="async">
+                </picture>
             </div>
             <div class="masonry-item fade-in-element">
-                <img src="DISSENYS/3-diseño2.JPG" alt="Diseño 3 - Vista 2" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/3-diseño2-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/3-diseño2.webp" type="image/webp">
+                    <img src="DISSENYS/3-diseño2.JPG" alt="Diseño 3 - Vista 2" loading="lazy" decoding="async">
+                </picture>
             </div>
             <div class="masonry-item fade-in-element">
-                <img src="DISSENYS/3-diseño3.JPG" alt="Diseño 3 - Vista 3" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/3-diseño3-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/3-diseño3.webp" type="image/webp">
+                    <img src="DISSENYS/3-diseño3.JPG" alt="Diseño 3 - Vista 3" loading="lazy" decoding="async">
+                </picture>
             </div>
             <div class="masonry-item fade-in-element">
-                <img src="DISSENYS/3-diseño4.JPG" alt="Diseño 3 - Vista 4" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/3-diseño4-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/3-diseño4.webp" type="image/webp">
+                    <img src="DISSENYS/3-diseño4.JPG" alt="Diseño 3 - Vista 4" loading="lazy" decoding="async">
+                </picture>
             </div>
             <div class="masonry-item fade-in-element">
-                <img src="DISSENYS/3-diseño5.JPG" alt="Diseño 3 - Vista 5" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/3-diseño5-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/3-diseño5.webp" type="image/webp">
+                    <img src="DISSENYS/3-diseño5.JPG" alt="Diseño 3 - Vista 5" loading="lazy" decoding="async">
+                </picture>
             </div>
         </div>
     </section>
@@ -259,15 +306,27 @@
     <section class="design4-spotlight">
         <div class="design4-container">
             <div class="design4-hero fade-in-element">
-                <img src="DISSENYS/4-diseño4.JPG" alt="Diseño 4 - Hero Shot" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/4-diseño4-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/4-diseño4.webp" type="image/webp">
+                    <img src="DISSENYS/4-diseño4.JPG" alt="Diseño 4 - Hero Shot" loading="lazy" decoding="async">
+                </picture>
                 <div class="design4-title">DISEÑO<br>CUATRO</div>
             </div>
             <div class="design4-sub fade-in-element">
-                <img src="DISSENYS/4-diseño1.JPG" alt="Diseño 4 - Vista 1" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/4-diseño1-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/4-diseño1.webp" type="image/webp">
+                    <img src="DISSENYS/4-diseño1.JPG" alt="Diseño 4 - Vista 1" loading="lazy" decoding="async">
+                </picture>
                 <div class="design4-number">4.1</div>
             </div>
             <div class="design4-sub fade-in-element">
-                <img src="DISSENYS/4-diseño2.JPG" alt="Diseño 4 - Vista 2" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/4-diseño2-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/4-diseño2.webp" type="image/webp">
+                    <img src="DISSENYS/4-diseño2.JPG" alt="Diseño 4 - Vista 2" loading="lazy" decoding="async">
+                </picture>
                 <div class="design4-number">4.2</div>
             </div>
         </div>
@@ -282,7 +341,11 @@
                 <div class="backstage-quote">"El diseño es donde la ciencia y el arte se encuentran."</div>
             </div>
             <div class="backstage-image fade-in-element">
-                <img src="DISSENYS/2-diseño2.JPG" alt="Proceso creativo" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/2-diseño2-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/2-diseño2.webp" type="image/webp">
+                    <img src="DISSENYS/2-diseño2.JPG" alt="Proceso creativo" loading="lazy" decoding="async">
+                </picture>
                 <div class="backstage-label">PROCESS</div>
             </div>
         </div>
@@ -292,25 +355,41 @@
         <div class="design5-title-center">FINAL<br>LOOK</div>
         <div class="design5-grid">
             <div class="design5-cell fade-in-element">
-                <img src="DISSENYS/5-diseño1.JPG" alt="Diseño 5 - Vista 1" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/5-diseño1-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/5-diseño1.webp" type="image/webp">
+                    <img src="DISSENYS/5-diseño1.JPG" alt="Diseño 5 - Vista 1" loading="lazy" decoding="async">
+                </picture>
                 <div class="design5-overlay">
                     <div class="design5-label">5.1</div>
                 </div>
             </div>
             <div class="design5-cell fade-in-element">
-                <img src="DISSENYS/5-diseño2.JPG" alt="Diseño 5 - Vista 2" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/5-diseño2-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/5-diseño2.webp" type="image/webp">
+                    <img src="DISSENYS/5-diseño2.JPG" alt="Diseño 5 - Vista 2" loading="lazy" decoding="async">
+                </picture>
                 <div class="design5-overlay">
                     <div class="design5-label">5.2</div>
                 </div>
             </div>
             <div class="design5-cell fade-in-element">
-                <img src="DISSENYS/5-diseño3.JPG" alt="Diseño 5 - Vista 3" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/5-diseño3-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/5-diseño3.webp" type="image/webp">
+                    <img src="DISSENYS/5-diseño3.JPG" alt="Diseño 5 - Vista 3" loading="lazy" decoding="async">
+                </picture>
                 <div class="design5-overlay">
                     <div class="design5-label">5.3</div>
                 </div>
             </div>
             <div class="design5-cell fade-in-element">
-                <img src="DISSENYS/5-diseño4.JPG" alt="Diseño 5 - Vista 4" loading="lazy">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="DISSENYS-WEBP/5-diseño4-mobile.webp" type="image/webp">
+                    <source srcset="DISSENYS-WEBP/5-diseño4.webp" type="image/webp">
+                    <img src="DISSENYS/5-diseño4.JPG" alt="Diseño 5 - Vista 4" loading="lazy" decoding="async">
+                </picture>
                 <div class="design5-overlay">
                     <div class="design5-label">5.4</div>
                 </div>
@@ -342,115 +421,186 @@
     </section>
 
     <script>
-        // Aggressive image loader - images are now 2MB each (optimized)
-        let loaded=new Set(),loadQueue=[],activeLoads=0;
-        const MAX_CONCURRENT=6; // More concurrent loads since images are lighter
+        // Register Service Worker for aggressive caching
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((registration) => {
+                        console.log('SW registered:', registration.scope);
 
-        // Fast load function
-        const loadImg=(img)=>{
-            if(loaded.has(img))return Promise.resolve();
-            loaded.add(img);
+                        // Send list of images to precache
+                        const imagesToCache = Array.from(document.querySelectorAll('img'))
+                            .map(img => {
+                                // Get the WebP source from picture element if available
+                                const picture = img.closest('picture');
+                                if (picture) {
+                                    const source = picture.querySelector('source[type="image/webp"]');
+                                    if (source) return source.srcset;
+                                }
+                                return img.src;
+                            })
+                            .filter(url => url && url.includes('.webp'));
 
-            return new Promise(resolve=>{
-                if(img.dataset.src){
-                    img.src=img.dataset.src;
-                    img.removeAttribute('data-src');
-                }
+                        // Send to SW after a delay to avoid blocking
+                        setTimeout(() => {
+                            if (registration.active) {
+                                registration.active.postMessage({
+                                    type: 'PRECACHE_IMAGES',
+                                    urls: imagesToCache
+                                });
+                            }
+                        }, 3000);
+                    })
+                    .catch((error) => {
+                        console.log('SW registration failed:', error);
+                    });
+            });
+        }
 
-                const finish=()=>{
-                    img.classList.add('loaded');
-                    activeLoads--;
-                    processQueue();
-                    resolve();
+        // Optimized image loading system
+        const imageLoader = {
+            loaded: new Set(),
+            loading: new Set(),
+
+            // Load image with decode
+            load(img) {
+                if (this.loaded.has(img) || this.loading.has(img)) return Promise.resolve();
+                this.loading.add(img);
+
+                return new Promise((resolve) => {
+                    const finish = () => {
+                        img.classList.add('loaded');
+                        this.loading.delete(img);
+                        this.loaded.add(img);
+                        resolve();
+                    };
+
+                    if (img.complete && img.naturalWidth > 0) {
+                        finish();
+                    } else {
+                        // Use decode() for better performance
+                        img.decode()
+                            .then(finish)
+                            .catch(() => {
+                                // Fallback to onload
+                                img.onload = finish;
+                                img.onerror = finish;
+                            });
+                    }
+                });
+            },
+
+            // Preload next images in idle time
+            preloadNext(imgs, startIndex) {
+                const idleCallback = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+
+                const preloadBatch = () => {
+                    const batch = imgs.slice(startIndex, startIndex + 3);
+                    batch.forEach(img => this.load(img));
+
+                    if (startIndex + 3 < imgs.length) {
+                        idleCallback(() => {
+                            this.preloadNext(imgs, startIndex + 3);
+                        });
+                    }
                 };
 
-                if(img.complete){
-                    finish();
-                }else{
-                    img.onload=finish;
-                    img.onerror=finish;
-                }
-            });
-        };
-
-        // Process queue with higher concurrency
-        const processQueue=()=>{
-            while(activeLoads<MAX_CONCURRENT&&loadQueue.length>0){
-                activeLoads++;
-                const img=loadQueue.shift();
-                loadImg(img);
+                idleCallback(preloadBatch);
             }
         };
 
-        // Add to queue
-        const queueLoad=(img,priority=false)=>{
-            if(!loaded.has(img)&&!loadQueue.includes(img)){
-                if(priority){
-                    loadQueue.unshift(img);
-                }else{
-                    loadQueue.push(img);
+        // Viewport observer for lazy loading
+        const lazyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    imageLoader.load(img);
+                    lazyObserver.unobserve(img);
                 }
-                processQueue();
-            }
-        };
-
-        // Aggressive viewport observer
-        const imgOpts={threshold:0,rootMargin:'2000px 0px'}; // Increased margin
-        const imgObs=new IntersectionObserver(e=>{
-            e.forEach(t=>{
-                if(t.isIntersecting&&t.target.tagName==='IMG'){
-                    loadQueue.unshift(t.target); // Priority
-                    processQueue();
-                    imgObs.unobserve(t.target);
-                }
-            })
-        },imgOpts);
-
-        // Initialize
-        window.addEventListener('DOMContentLoaded',()=>{
-            const imgs=Array.from(document.querySelectorAll('img[loading="lazy"]'));
-
-            // Convert to data-src
-            imgs.forEach((img,i)=>{
-                if(i>2){ // Keep first 3 with src
-                    img.dataset.src=img.src;
-                    img.removeAttribute('src');
-                }
-                imgObs.observe(img);
             });
-
-            // Load first 3 immediately
-            imgs.slice(0,3).forEach(img=>loadImg(img));
-
-            // Aggressive preload after 300ms
-            setTimeout(()=>{
-                // Load all remaining images quickly
-                imgs.slice(3).forEach(img=>queueLoad(img));
-            },300);
-
-            // On scroll, boost priority
-            window.addEventListener('scroll',()=>{
-                imgs.forEach(img=>queueLoad(img,true));
-            },{passive:true,once:true});
+        }, {
+            rootMargin: '300px 0px', // Load 300px before entering viewport
+            threshold: 0
         });
 
-        // Fade elements
-        const opts={threshold:.15,rootMargin:'0px 0px -50px 0px'};
-        const fadeObs=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){t.target.classList.add('visible');fadeObs.unobserve(t)}})},opts);
-        document.querySelectorAll('.fade-in-element').forEach(el=>fadeObs.observe(el));
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            const allImages = Array.from(document.querySelectorAll('img'));
+
+            // Separate critical images (fetchpriority="high")
+            const criticalImages = allImages.filter(img => img.getAttribute('fetchpriority') === 'high');
+            const lazyImages = allImages.filter(img => img.loading === 'lazy');
+
+            // Load critical images immediately
+            criticalImages.forEach(img => imageLoader.load(img));
+
+            // Observe lazy images
+            lazyImages.forEach(img => lazyObserver.observe(img));
+
+            // Preload remaining images during idle time
+            if (lazyImages.length > 0) {
+                imageLoader.preloadNext(lazyImages, 0);
+            }
+
+            // Boost loading on first interaction
+            const boost = () => {
+                lazyImages.forEach(img => imageLoader.load(img));
+            };
+            ['scroll', 'mousemove', 'touchstart'].forEach(event => {
+                window.addEventListener(event, boost, { once: true, passive: true });
+            });
+        });
+
+        // Fade-in animation observer
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    fadeObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.fade-in-element').forEach(el => fadeObserver.observe(el));
 
         // Page counter
-        const secs=document.querySelectorAll('section');
-        const counter=document.querySelector('.page-counter');
-        let curr=1;
-        const secObs=new IntersectionObserver(e=>{e.forEach(t=>{if(t.isIntersecting){const i=Array.from(secs).indexOf(t.target)+1;if(i!==curr){curr=i;counter.textContent=i.toString().padStart(2,'0')}}})},{threshold:.5});
-        secs.forEach(s=>secObs.observe(s));
+        const sections = document.querySelectorAll('section');
+        const counter = document.querySelector('.page-counter');
+        let currentSection = 1;
 
-        // Parallax
-        const cvr=document.querySelector('.cover');
-        const cvrTitle=document.querySelector('.cover-title');
-        let tick=false;
-        cvr.addEventListener('mousemove',e=>{if(!tick){window.requestAnimationFrame(()=>{const x=(e.clientX/window.innerWidth-.5)*20;const y=(e.clientY/window.innerHeight-.5)*20;cvrTitle.style.transform=`translate(${x}px,${y}px)`;tick=false});tick=true}});
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(sections).indexOf(entry.target) + 1;
+                    if (index !== currentSection) {
+                        currentSection = index;
+                        counter.textContent = index.toString().padStart(2, '0');
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(section => sectionObserver.observe(section));
+
+        // Parallax effect on cover
+        const cover = document.querySelector('.cover');
+        const coverTitle = document.querySelector('.cover-title');
+        let rafPending = false;
+
+        cover.addEventListener('mousemove', (e) => {
+            if (!rafPending) {
+                rafPending = true;
+                requestAnimationFrame(() => {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                    coverTitle.style.transform = `translate(${x}px, ${y}px)`;
+                    rafPending = false;
+                });
+            }
+        });
     </script>
 </body>
 </html>

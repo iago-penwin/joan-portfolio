@@ -1,0 +1,14 @@
+# Scripts de optimización (ya no se necesitan)
+convert-to-webp.js
+optimize-images.js
+
+# Imágenes originales JPG (mantenemos solo WebP)
+DISSENYS/
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Archivos temporales
+*.log
+.DS_Store
